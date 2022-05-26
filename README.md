@@ -13,5 +13,9 @@ MPU-6050 IMU unit and TMP117 temperature sensor.
 The app has multiple pages and comes with the database 
 download feature as well.
 
+I have all the PCB designs, 3D prints, arduino codes, app. I can guide you completely 
+in such projects. If you ever need me contact me on
+shahrozubaid08@gmail.com
+
 Please explore the code and hopefully you'll find it useful.
 Thanks.
