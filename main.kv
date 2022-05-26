@@ -1,0 +1,614 @@
+WindowManager:
+	ProfileWindow
+    StepsWindow
+    HeartWindow:
+    DataWindow:
+        id: data_scr
+    OxygenWindow
+    TemperatureWindow
+    WeightWindow
+    BluetoothWindow
+
+
+
+################## PROFILE PAGE ############################
+
+<ProfileWindow>:
+	name: 'Profile'
+    MDGridLayout:
+        size_hint_y: .2
+        pos_hint: {'x':0, 'y': 0.8}
+        cols: 1
+        MDCard:
+            size_hint_y: .2
+            md_bg_color:app.theme_cls.primary_color
+            radius: [0, 0, 25, 25]
+            FloatLayout:
+                MDIconButton:
+                    icon: "bluetooth"
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    pos_hint: {'x':0.9, 'y': 0.45}
+                    on_press: root.connect()
+                    on_release:
+                        root.manager.transition.direction = 'left'
+                        root.manager.current = 'Bluetooth'
+                MDIconButton:
+                    icon: "database"
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    pos_hint: {'x':0.85, 'y': 0.45}
+                    on_press: app.add_datatable()
+                    on_release:
+                        root.manager.transition.direction = 'right'
+                        root.manager.current = 'Data'
+                    
+                MDLabel
+                    text:"Wearable Health Monitor"
+                    font_style: "H4"
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    pos_hint: {"x": 0.05, "y": 0}
+    
+
+
+
+    ScrollView:
+        size_hint_y: .85
+        pos_hint: {'x':0, 'y': 0}
+        do_scroll_x: False
+        do_scroll_y: True
+
+        MDGridLayout:
+            size:(root.width, root.height)
+            size_hint_x: None
+            size_hint_y: None
+            cols: 1
+            height: self.minimum_height
+            row_default_height: 180
+            row_force_default: True
+            padding:[dp(15),dp(15),dp(15),dp(35)]
+            spacing:dp(15)
+            
+            MDCard:
+                elevation: 15
+                focus_behavior: True
+                line_color:app.theme_cls.primary_color
+                radius: [25, 25, 25, 25]
+                FloatLayout:
+                    MDLabel:
+                        text:"Steps"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.05, "y": .32}
+
+                    MDLabel:
+                        id: step_progress
+                        text: ""
+                        size_hint: None,None
+                        width: 150
+                        height: 150
+                        pos_hint: {"center_x":0.3,"center_y":0.5}
+
+                        progress: 0
+
+                        canvas.before:
+                            Color:
+                                rgba: [0/255,128/255,128/255,0.3]
+                            Ellipse:
+                                size: self.size
+                                pos: self.pos
+                            Color:
+                                rgba: [0/255,128/255,128/255,1]
+                            Ellipse:
+                                size: self.size
+                                pos: self.pos
+                                angle_end:self.progress
+                            Color:
+                                rgba: [255/255,255/255,255/255,1]
+                            Ellipse:
+                                size: [self.width-20,self.height-20]
+                                pos: [(self.center_x - (self.width-20)/2),(self.center_y - (self.height-20)/2)]
+                    MDIconButton:
+                        icon: "dots-vertical"
+                        pos_hint: {"x": 0.93, "y": .7}
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_press:
+                            root.manager.transition.direction = 'left'
+                            root.manager.current = 'Steps'
+                    MDIcon:
+                        icon: "shoe-print"
+                        font_size: dp(48)
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.271, "y": .15}
+                    MDLabel:
+                        id: step_label
+                        text:"0"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"center_x": 0.765, "center_y":0.35}
+                    MDLabel:
+                        text:"Step distance Km:"
+                        font_style: "H5"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.45, "y":0.15}
+                    MDLabel:
+                        text:"Step consumption:\n(Kcal)"
+                        font_style: "H5"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        # text_color: 0, 0, 1, 1
+                        pos_hint: {"x": 0.45, "y":-0.1}
+                    MDLabel:
+                        id: distane_label
+                        text:"100"
+                        font_style: "H5"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.75, "y":0.15}
+                    MDLabel:
+                        id: consumption_label 
+                        text:"100"
+                        font_style: "H5"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.75, "y":-0.02}
+            MDCard:
+                elevation: 15
+                focus_behavior: True
+                line_color:app.theme_cls.primary_color
+                radius: [25, 25, 25, 25]
+                FloatLayout:
+                    MDLabel:
+                        text:"Heart Rate"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.05, "y": .32}
+                    MDIcon:
+                        icon: "heart-pulse"
+                        font_size: dp(60)
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.45, "y": .29}
+                    MDLabel:
+                        id: heartrate_label 
+                        text:"0"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.55, "y":0.32}
+                    MDIconButton:
+                        icon: "dots-vertical"
+                        pos_hint: {"x": 0.93, "y": .7}
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_press:
+                            root.manager.transition.direction = 'left'
+                            root.manager.current = 'Heart'
+            MDCard:
+                elevation: 15
+                focus_behavior: True
+                line_color:app.theme_cls.primary_color
+                radius: [25, 25, 25, 25]
+                FloatLayout:
+                    MDLabel:
+                        text:"Oxygen\nConcentration"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.05, "y": .25}
+                    MDIcon:
+                        icon: "meditation"
+                        font_size: dp(60)
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.45, "y": .29}
+                    MDLabel:
+                        id: oxygen_label 
+                        text:"_ _"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.55, "y":0.32}
+                    MDIconButton:
+                        icon: "dots-vertical"
+                        pos_hint: {"x": 0.93, "y": .7}
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_press:
+                            root.manager.transition.direction = 'left'
+                            root.manager.current = 'Oxygen'
+
+            MDCard:
+                elevation: 15
+                focus_behavior: True
+                line_color:app.theme_cls.primary_color
+                radius: [25, 25, 25, 25]
+                FloatLayout:
+                    MDLabel:
+                        text:"Skin\nTemperature"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.05, "y": .25}
+                    MDLabel:
+                        id: temperature_circle
+                        text: ""
+                        size_hint: None,None
+                        width: 150
+                        height: 150
+                        pos_hint: {"center_x":0.5,"center_y":0.5}
+
+                        progress: 0
+
+                        canvas.before:
+                            Color:
+                                rgba: [0/255,128/255,128/255,0.3]
+                            Ellipse:
+                                size: self.size
+                                pos: self.pos
+                            Color:
+                                rgba: [0/255,128/255,128/255,1]
+                            Ellipse:
+                                size: self.size
+                                pos: self.pos
+                                angle_end:self.progress
+                            Color:
+                                rgba: [255/255,255/255,255/255,1]
+                            Ellipse:
+                                size: [self.width-20,self.height-20]
+                                pos: [(self.center_x - (self.width-20)/2),(self.center_y - (self.height-20)/2)]
+                    MDIcon:
+                        icon: "thermometer"
+                        font_size: dp(48)
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.471, "y": .15}
+                    MDLabel:
+                        id: temp_label
+                        text:"0"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"center_x": 0.965, "center_y":0.35}
+                    MDIconButton:
+                        icon: "dots-vertical"
+                        pos_hint: {"x": 0.93, "y": .7}
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_press:
+                            root.manager.transition.direction = 'left'
+                            root.manager.current = 'Temperature'
+            MDCard:
+                elevation: 15
+                focus_behavior: True
+                line_color:app.theme_cls.primary_color
+                radius: [25, 25, 25, 25]
+                FloatLayout:
+                    MDLabel:
+                        text:"Weight"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.05, "y": .25}
+                    MDLabel:
+                        text:"Body Score"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.6, "y": .25}
+                    MDLabel:
+                        text:"|\n|\n|"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.5, "y": 0}
+                    MDIcon:
+                        icon: "scale"
+                        font_size: dp(60)
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.1, "y": -0.2}
+                    MDLabel:
+                        id: weight
+                        text:"_ _"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.22, "y":-0.16}
+                    MDIcon:
+                        icon: "walk"
+                        font_size: dp(60)
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.6, "y": -0.2}
+                    MDLabel:
+                        id: body_score
+                        text:"_ _"
+                        font_style: "H4"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        pos_hint: {"x": 0.72, "y":-0.16}
+                    MDIconButton:
+                        icon: "dots-vertical"
+                        pos_hint: {"x": 0.93, "y": .7}
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_press:
+                            root.manager.transition.direction = 'left'
+                            root.manager.current = 'Weight'
+
+<DataWindow>
+    name: 'Data'
+    MDGridLayout:
+        size_hint_y: .2
+        pos_hint: {'x':0, 'y': 0.8}
+        cols: 1
+        MDCard:
+            size_hint_y: .2
+            md_bg_color:app.theme_cls.primary_color
+            radius: [0, 0, 25, 25]
+            FloatLayout:
+                MDIconButton:
+                    icon: "arrow-left"
+                    user_font_size: dp(40)
+                    pos_hint: {"x": 0.05, "y": .4}
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    on_release:
+                        root.manager.transition.direction = 'right'
+                        root.manager.current = 'Profile'
+                MDIconButton:
+                    icon: "download"
+                    user_font_size: dp(40)
+                    pos_hint: {"x": 0.85, "y": .4}
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    on_release:
+                        app.print_csv()
+                
+
+    AnchorLayout:
+        id: data_layout
+
+<StepsWindow>
+    name: 'Steps'
+    MDGridLayout:
+        size_hint_y: .2
+        pos_hint: {'x':0, 'y': 0.8}
+        cols: 1
+        MDCard:
+            size_hint_y: .2
+            md_bg_color:app.theme_cls.primary_color
+            radius: [0, 0, 25, 25]
+            FloatLayout:
+                MDIconButton:
+                    icon: "arrow-left"
+                    user_font_size: dp(40)
+                    pos_hint: {"x": 0.05, "y": .3}
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    on_release:
+                        root.manager.transition.direction = 'right'
+                        root.manager.current = 'Profile'
+                MDLabel:
+                    text:"Steps"
+                    font_style: "H3"
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    pos_hint: {"x": 0.45, "center_y": 0.5}
+    MDGridLayout:
+        size_hint_y: .6
+        size_hint_x: .6
+        pos_hint: {'x':0.2, 'y': 0.1}
+        cols: 1
+        MDCard:
+            size_hint_y: .7
+            size_hint_x: .9
+            md_bg_color:app.theme_cls.primary_color
+            radius: [25, 25, 25, 25]
+            MDLabel:
+                text:"          Age Women           Steps/Day\n               18-40                     12000\n               40-50                     11000\n               50-60                     10000\n           Age Men              Steps/Day\n               18-50                     12000\n           50-Above                  11000"
+                font_style: "H5"
+                theme_text_color: "Custom"
+                text_color: "white"
+                pos_hint: {"x": 0.5, 'center-y': 0.1}
+                
+
+<HeartWindow>
+    name: 'Heart'
+    MDGridLayout:
+        size_hint_y: .2
+        pos_hint: {'x':0, 'y': 0.8}
+        cols: 1
+        MDCard:
+            size_hint_y: .2
+            md_bg_color:app.theme_cls.primary_color
+            radius: [0, 0, 25, 25]
+            FloatLayout:
+                MDIconButton:
+                    icon: "arrow-left"
+                    user_font_size: dp(40)
+                    pos_hint: {"x": 0.05, "y": .3}
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    on_release:
+                        root.manager.transition.direction = 'right'
+                        root.manager.current = 'Profile'
+                MDLabel:
+                    text:"Heart Rate"
+                    font_style: "H3"
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    pos_hint: {"x": 0.4, "center_y": 0.5}
+    MDGridLayout:
+        size_hint_y: .6
+        size_hint_x: .6
+        pos_hint: {'x':0.2, 'y': 0.1}
+        cols: 1
+        MDCard:
+            size_hint_y: .7
+            size_hint_x: .9
+            md_bg_color:app.theme_cls.primary_color
+            radius: [25, 25, 25, 25]
+            MDLabel:
+                text:"              Age     -     Targeted Heart Rate\n          20 Years                 100-170\n          30 Years                 95-162\n          35 Years                 93-157\n          40 Years                 90-153\n          50 Years                 85-145\n          60 Years                 78-132\n          70 Years                 75-128"
+                font_style: "H5"
+                theme_text_color: "Custom"
+                text_color: "white"
+                pos_hint: {"x": 0.5, 'center-y': 0.1}
+<OxygenWindow>
+    name: 'Oxygen'
+    MDGridLayout:
+        size_hint_y: .2
+        pos_hint: {'x':0, 'y': 0.8}
+        cols: 1
+        MDCard:
+            size_hint_y: .2
+            md_bg_color:app.theme_cls.primary_color
+            radius: [0, 0, 25, 25]
+            FloatLayout:
+                MDIconButton:
+                    icon: "arrow-left"
+                    user_font_size: dp(40)
+                    pos_hint: {"x": 0.05, "y": .3}
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    on_release:
+                        root.manager.transition.direction = 'right'
+                        root.manager.current = 'Profile'
+                MDLabel:
+                    text:"Oxygen Concentration"
+                    font_style: "H3"
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    pos_hint: {"x": 0.25, "center_y": 0.5}
+    MDGridLayout:
+        size_hint_y: .6
+        size_hint_x: .6
+        pos_hint: {'x':0.2, 'y': 0.1}
+        cols: 1
+        MDCard:
+            size_hint_y: .7
+            size_hint_x: .9
+            md_bg_color:app.theme_cls.primary_color
+            radius: [25, 25, 25, 25]
+            MDLabel:
+                text:"         Age     -     Oxygen Concentration SpO2\n      98-100                 Normal\n      95-97                 Insufficient\n      90-94                 Low\n      >90                    Critical\n      >80                     Severe Hypoxia\n      >70                     Danger to life"
+                font_style: "H5"
+                theme_text_color: "Custom"
+                text_color: "white"
+                pos_hint: {"x": 0.5, 'center-y': 0.1}
+
+<TemperatureWindow>
+    name: 'Temperature'
+    MDGridLayout:
+        size_hint_y: .2
+        pos_hint: {'x':0, 'y': 0.8}
+        cols: 1
+        MDCard:
+            size_hint_y: .2
+            md_bg_color:app.theme_cls.primary_color
+            radius: [0, 0, 25, 25]
+            FloatLayout:
+                MDIconButton:
+                    icon: "arrow-left"
+                    user_font_size: dp(40)
+                    pos_hint: {"x": 0.05, "y": .3}
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    on_release:
+                        root.manager.transition.direction = 'right'
+                        root.manager.current = 'Profile'
+                MDLabel:
+                    text:"Skin Temperature"
+                    font_style: "H3"
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    pos_hint: {"x": 0.3, "center_y": 0.5}
+    MDGridLayout:
+        size_hint_y: .6
+        size_hint_x: .6
+        pos_hint: {'x':0.2, 'y': 0.1}
+        cols: 1
+        MDCard:
+            size_hint_y: .7
+            size_hint_x: .9
+            md_bg_color:app.theme_cls.primary_color
+            radius: [25, 25, 25, 25]
+            MDLabel:
+                text:"         Wrist     -     Temperature (C)\n      Cold(15C)                 26.9\n      Room(27C)                 34.0\n      Hot(15C)                 37.0"
+                font_style: "H5"
+                theme_text_color: "Custom"
+                text_color: "white"
+                pos_hint: {"x": 0.5, 'center-y': 0.1}
+
+<WeightWindow>
+    name: 'Weight'
+    MDGridLayout:
+        size_hint_y: .2
+        pos_hint: {'x':0, 'y': 0.8}
+        cols: 1
+        MDCard:
+            size_hint_y: .2
+            md_bg_color:app.theme_cls.primary_color
+            radius: [0, 0, 25, 25]
+            FloatLayout:
+                MDIconButton:
+                    icon: "arrow-left"
+                    user_font_size: dp(40)
+                    pos_hint: {"x": 0.05, "y": .3}
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    # on_press: root.steps()
+                    on_release:
+                        root.manager.transition.direction = 'right'
+                        root.manager.current = 'Profile'
+                MDLabel:
+                    text:"Body Weight"
+                    font_style: "H3"
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    pos_hint: {"x": 0.4, "center_y": 0.5}
+
+<BluetoothWindow>
+    name: 'Bluetooth'
+    MDGridLayout:
+        size_hint_y: .2
+        pos_hint: {'x':0, 'y': 0.8}
+        cols: 1
+        MDCard:
+            size_hint_y: .2
+            md_bg_color:app.theme_cls.primary_color
+            radius: [0, 0, 25, 25]
+            FloatLayout:
+                MDIconButton:
+                    icon: "arrow-left"
+                    user_font_size: dp(40)
+                    pos_hint: {"x": 0.05, "y": .3}
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    on_release:
+                        root.manager.transition.direction = 'right'
+                        root.manager.current = 'Profile'
+                MDLabel:
+                    text:"Bluetooth"
+                    font_style: "H3"
+                    theme_text_color: "Custom"
+                    text_color: "white"
+                    pos_hint: {"x": 0.4, "center_y": 0.5}
+
+    MDCard:
+        size_hint_x: .7
+        size_hint_y: .2
+        elevation: 15
+        focus_behavior: True
+        line_color:app.theme_cls.primary_color
+        radius: [25, 25, 25, 25]
+        pos_hint: {'x':0.15, 'y': 0.5}
